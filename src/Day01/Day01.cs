@@ -1,16 +1,9 @@
-using System.Linq;
-
 namespace AdventOfCode;
 
-public class Day01 : Solution
+public class Day01Solution : Solution
 {
 
-    private string input { set; get; }
-
-    public Day01() : base(2022, 01, "Title")
-    {
-        input = InputLoader.ReadInput($"src/Day01/input.txt");
-    }
+    public Day01Solution() : base(2022, 1, "Title") { }
 
     public override string SolvePartOne()
     {
@@ -31,13 +24,5 @@ public class Day01 : Solution
             .Take(3)
             .Sum()
             .ToString();
-    }
-}
-
-public static class InputLoader
-{
-    public static string ReadInput(string inputFile)
-    {
-        return File.ReadAllText(inputFile);
     }
 }

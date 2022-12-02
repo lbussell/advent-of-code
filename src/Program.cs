@@ -7,7 +7,8 @@ class Program
         Console.WriteLine();
 
         Solution[] Days = {
-            new Day01(),
+            new Day01Solution(),
+            new Day02Solution(),
         };
 
         foreach (Solution day in Days)

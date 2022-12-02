@@ -5,12 +5,14 @@ public abstract class Solution
     public int Year { get; }
     public int Day { get; }
     public string Title { get; }
+    public string input { get; }
 
     public Solution(int year, int day, string title)
     {
         Year = year;
         Day = day;
         Title = title;
+        input = File.ReadAllText($"src/Day{String.Format("{0:D2}", day)}/input.txt");
     }
 
     public IEnumerable<Result> SolveAndPrintAll()
