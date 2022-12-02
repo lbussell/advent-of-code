@@ -9,6 +9,7 @@ class Program
         Solution[] Days = {
             new Day01Solution(),
             new Day02Solution(),
+            new Day02Take2Solution(),
         };
 
         foreach (Solution day in Days)
