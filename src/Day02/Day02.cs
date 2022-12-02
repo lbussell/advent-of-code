@@ -4,7 +4,7 @@ public class Day02Solution : Solution
 {
     private IEnumerable<char[]> EncryptedMatches { get; }
 
-    public Day02Solution() : base(2022, 2, "Title")
+    public Day02Solution() : base(2022, 2, "Rock Paper Scissors")
     {
         EncryptedMatches = ParseInput(input);
     }

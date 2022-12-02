@@ -3,7 +3,7 @@ namespace AdventOfCode;
 public class Day01Solution : Solution
 {
 
-    public Day01Solution() : base(2022, 1, "Title") { }
+    public Day01Solution() : base(2022, 1, "Calorie Counting") { }
 
     public override string SolvePartOne()
     {
