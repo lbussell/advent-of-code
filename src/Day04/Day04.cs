@@ -8,14 +8,14 @@ public class Day04Solution : Solution
     public override string SolvePartOne() =>
         input.Split(Environment.NewLine)
             .Select(ParsePairString)
-            .Where(p => PairsContainEachother(p))
+            .Where(PairsContainEachother)
             .Count()
             .ToString();
 
     public override string SolvePartTwo() =>
         input.Split(Environment.NewLine)
             .Select(ParsePairString)
-            .Where(p => PairsOverlap(p))
+            .Where(PairsOverlap)
             .Count()
             .ToString();
 
