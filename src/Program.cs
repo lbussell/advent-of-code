@@ -12,6 +12,7 @@ class Program
             // new Day02Take2Solution(),
             // new Day04Solution(),
             new Day05Solution(),
+            new Day06Solution()
         };
 
         foreach (Solution day in Days)
