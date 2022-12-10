@@ -18,6 +18,20 @@ public class Day07Solution : Solution
             .ToString();
     }
 
+    public override string SolvePartTwo()
+    {
+        Directory tree = ParseDirectoryTree(input.Split(Environment.NewLine));
+        int unusedSpace = totalSpace - tree.Size;
+        int spaceToFree = neededSpace - unusedSpace;
+
+        return GetDirectories(tree)
+            .Select(d => d.Size)
+            .Where(size => size > spaceToFree)
+            .OrderBy(_ => _)
+            .FirstOrDefault()
+            .ToString();
+    }
+
     private static List<Directory> GetDirectories(Directory tree)
     {
         var dirs = new List<Directory>();
@@ -70,11 +84,6 @@ public class Day07Solution : Solution
         }
 
         return root;
-    }
-
-    public override string SolvePartTwo()
-    {
-        return "unfinished";
     }
 }
 
