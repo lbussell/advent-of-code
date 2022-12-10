@@ -12,7 +12,7 @@ public abstract class Solution
         Year = year;
         Day = day;
         Title = title;
-        input = File.ReadAllText($"src/Day{String.Format("{0:D2}", day)}/input.txt");
+        input = File.ReadAllText($"src/Day{String.Format("{0:D2}", day)}/realinput.txt");
     }
 
     public IEnumerable<Result> SolveAndPrintAll()

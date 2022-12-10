@@ -2,19 +2,44 @@ namespace AdventOfCode;
 
 public class Day07Solution : Solution
 {
+    private const int totalSpace = 70000000;
+    private const int neededSpace = 30000000;
 
     public Day07Solution() : base(2022, 7, "No Space Left On Device") { }
 
     public override string SolvePartOne()
     {
-        Day7File tree = ParseDirectoryTree(input.Split(Environment.NewLine));
-        return tree.LimitedSize.ToString();
+        Directory tree = ParseDirectoryTree(input.Split(Environment.NewLine));
+
+        return GetDirectories(tree)
+            .Select(d => d.Size)
+            .Where(s => s <= 100000)
+            .Sum()
+            .ToString();
     }
 
-    private static Day7File ParseDirectoryTree(string[] input)
+    private static List<Directory> GetDirectories(Directory tree)
     {
-        Day7File root = new Day7File("/");
-        Day7File current = root;
+        var dirs = new List<Directory>();
+
+        void r(Directory d)
+        {
+            d.SubDirectories.ForEach((Directory subd) => 
+                {
+                    dirs.Add(subd);
+                    r(subd);
+                });
+        }
+
+        r(tree);
+        return dirs;
+    }
+
+    private static Directory ParseDirectoryTree(string[] input)
+    {
+        Directory root = new Directory("/");
+        Directory current = root;
+
         foreach (string line in input.Skip(1))
         {
             string[] splitLine = line.Split(' ');
@@ -22,23 +47,28 @@ public class Day07Solution : Solution
             {
                 case ["$", "ls"]:
                     continue;
+
                 case ["$", "cd", ".."]:
                     if (current.Parent is not null)
                         current = current.Parent;
                     else
                         throw new Exception($"No directory above {current}");
                     break;
+
                 case ["$", "cd", _]:
-                    current = current.GetChild(splitLine[2]);
+                    current = current.GetSubDir(splitLine[2]);
                     break;
+
                 case ["dir", _]:
-                    current.AddToDirectory(new Day7File(splitLine[1], current));
+                    current.AddToDirectory(new Directory(splitLine[1], current));
                     break;
+
                 default:
-                    current.AddToDirectory(new Day7File(splitLine[1], current, int.Parse(splitLine[0])));
+                    current.AddToDirectory(new Day7File(splitLine));
                     break;
             }
         }
+
         return root;
     }
 
@@ -48,42 +78,40 @@ public class Day07Solution : Solution
     }
 }
 
-public class Day7File
+public class Directory
 {
-    private int _size { get; }
-    public int Size
-        { get => IsDirectory ? DirectoryContent.Select(f => f.Size).Sum() : _size; }
-    public int LimitedSize
-    {
-        get 
-        {
-            if (IsDirectory)
-            {
-                return DirectoryContent.Select(f => f.Size < 100000 ? f.Size : 0).Sum();
-            }
-            else
-            {
-                return Size < 100000 ? Size : 0;
-            }
-        }
-    }
+    public int Size { get => SubDirectories.Select(f => f.Size).Sum() + SubFiles.Select(f => f.Size).Sum(); }
     public string Name { get; }
-    public Day7File? Parent { get; }
-    public List<Day7File> DirectoryContent { get; }
-    public bool IsDirectory { get => DirectoryContent.Count() > 0; }
+    public Directory? Parent { get; }
+    public List<Directory> SubDirectories { get; }
+    public List<Day7File> SubFiles { get; }
 
-    public Day7File(string name, Day7File? parent = null, int size = 0) {
+    public Directory(string name, Directory? parent = null, int size = 0) {
         Parent = parent;
         Name = name;
-        _size = size;
-        DirectoryContent = new List<Day7File>();
+        SubDirectories = new List<Directory>();
+        SubFiles = new List<Day7File>();
     }
 
-    public Day7File GetChild(string name)
+    public Directory GetSubDir(string name)
     {
-        return DirectoryContent.Where(f => f.Name == name).First();
+        return SubDirectories.Where(f => f.Name == name).First();
     }
 
+    public void AddToDirectory(Directory dir) =>
+        SubDirectories.Add(dir);
     public void AddToDirectory(Day7File file) =>
-        DirectoryContent.Add(file);
+        SubFiles.Add(file);
+}
+
+public readonly struct Day7File
+{
+    public readonly string Name;
+    public readonly int Size;
+
+    public Day7File(string[] args) // format: ["14848514", "b.txt"]
+    {
+        Size = int.Parse(args[0]);
+        Name = args[1];
+    }
 }
