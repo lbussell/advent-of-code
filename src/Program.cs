@@ -1,5 +1,7 @@
 ﻿namespace AdventOfCode;
 
+using AdventOfCode.Day09Util;
+
 class Program
 {
     static void Main(string[] args)
@@ -14,7 +16,8 @@ class Program
             // new Day05Solution(),
             // new Day06Solution(),
             // new Day07Solution(),
-            new Day08Solution(),
+            // new Day08Solution(),
+            new Day09Solution(),
         };
 
         foreach (Solution day in Days)
