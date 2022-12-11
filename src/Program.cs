@@ -13,7 +13,8 @@ class Program
             // new Day04Solution(),
             // new Day05Solution(),
             // new Day06Solution(),
-            new Day07Solution(),
+            // new Day07Solution(),
+            new Day08Solution(),
         };
 
         foreach (Solution day in Days)
