@@ -1,18 +1,20 @@
 namespace AdventOfCode.CRT;
+using System.Text;
 
-class CPU
+public class CPU
 {
     public IEnumerable<int> SignalStrengths { get; private set; }
+
+    private int Ptr;
+    private string[] Program;
+    private int X;
+    private int Clock;
+    private int Wait;
+    private Display Display;
+    Action CurrentInstruction;
     private IEnumerable<(int c, int x)> DebugSignalStrengths;
 
-    private int Clock;
-    private int X;
-    private int Ptr;
-    private int Wait;
-    private string[] Program;
-    Action CurrentInstruction;
-
-    public CPU(string[] instructions) {
+    public CPU(string[] instructions, Display display) {
         Clock = 0;
         X = 1;
         Ptr = 0;
@@ -21,17 +23,16 @@ class CPU
         CurrentInstruction = Noop;
         SignalStrengths = new List<int>();
         DebugSignalStrengths = new List<(int c, int x)>();
+        Display = display;
     }
 
     public void Run()
     {
         while (Ptr < Program.Length || Wait > 0)
             Tick();
-        // if (Wait == 0)
-        //     CurrentInstruction();
     }
 
-    private void Tick()
+    public void Tick()
     {
         Clock += 1;
 
@@ -53,7 +54,16 @@ class CPU
             CurrentInstruction();
         }
 
-        Console.WriteLine($"clock {Clock}, wait {Wait}, ptr {Ptr}, x {X}");
+        UpdateDisplay();
+    }
+
+    private void UpdateDisplay()
+    {
+        int pos = (Clock) % Display.W;
+        if (X-1 <= pos && pos <= X+1)
+        {
+            Display.SetPixel(Clock);
+        }
     }
 
     private Action ReadInstruction()
@@ -75,4 +85,39 @@ class CPU
 
     private static void Noop() { return; }
     private Action AddX(int n) => () => X += n;
+}
+
+public class Display
+{
+    public int H { get; private set; }
+    public int W { get; private set; }
+
+    private bool[] _Display;
+
+    public Display(int height, int width)
+    {
+        H = height;
+        W = width;
+        _Display = new bool[W*H];
+    }
+
+    public void SetPixel(int n)
+    {
+        if (n >= _Display.Length) return;
+        _Display[n] = true;
+    }
+
+    public void Show()
+    {
+        for (int r = 0; r < H; r++)
+        {
+            StringBuilder sb = new();
+
+            for (int c = 0; c < W; c++)
+                sb.Append(_Display[r*W + c] ? '#' : '.');
+
+            Console.WriteLine(sb.ToString());
+        }
+        Console.WriteLine();
+    }
 }

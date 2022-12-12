@@ -9,14 +9,16 @@ public class Day10Solution : Solution
     public override string SolvePartOne()
     {
         string[] instructions = input.Split(Environment.NewLine);
-        CPU cpu = new CPU(instructions);
+        Display display = new(6, 40);
+        CPU cpu = new CPU(instructions, display);
         cpu.Run();
+        display.Show();
         return cpu.SignalStrengths.Sum().ToString();
     }
 
     public override string SolvePartTwo()
     {
-        return "unsolved";
+        return "See above.";
     }
 }
 
