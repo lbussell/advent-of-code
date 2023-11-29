@@ -2,7 +2,7 @@ namespace Bussell.AdventOfCode.Solutions;
 
 internal class DemoSolution2 : SolutionWithTextInput
 {
-    public override int Day => 0;
+    public override int Day => 99;
 
     public override string Name => "Demo Solution";
 

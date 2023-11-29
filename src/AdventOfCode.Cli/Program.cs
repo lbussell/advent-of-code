@@ -1,12 +1,25 @@
 ﻿namespace Bussell.AdventOfCode.Cli;
 
+using BenchmarkDotNet.Running;
+
 internal class Program
 {
-    internal static void Main(string[] args)
+    internal static void Main(int? day = null, bool benchmark = false)
     {
-        Solver solver = new();
-        solver.Execute();
+        if (benchmark)
+        {
+            BenchmarkRunner.Run(typeof(SolutionBenchmark));
+            return;
+        }
 
-        // BenchmarkRunner.Run(typeof(SolutionBenchmark));
+        Solver solver = new();
+
+        if (day != null)
+        {
+            solver.Execute(day.Value);
+            return;
+        }
+
+        solver.ExecuteAllDays();
     }
 }
