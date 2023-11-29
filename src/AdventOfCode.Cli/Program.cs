@@ -4,7 +4,12 @@ using BenchmarkDotNet.Running;
 
 internal class Program
 {
-    internal static void Main(int? day = null, bool benchmark = false)
+    /// <summary>
+    /// Entrypoint for my Advent of Code solutions.
+    /// </summary>
+    /// <param name="day">Which day's problem solutions to run.</param>
+    /// <param name="benchmark">Whether to benchmark all solutions.</param>
+    public static void Main(int? day = null, bool benchmark = false)
     {
         if (benchmark)
         {
