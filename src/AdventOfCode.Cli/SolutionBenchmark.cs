@@ -8,10 +8,8 @@ using Bussell.AdventOfCode.Solutions;
 [MemoryDiagnoser]
 public class SolutionBenchmark
 {
-    #pragma warning disable CS8618
     public IEnumerable<ISolution> Solutions =>
         new SolutionProvider().GetService<IEnumerable<ISolution>>().OrderBy(s => s.Day);
-    #pragma warning restore CS8618
 
     #pragma warning disable CS8618
     [ParamsSource(nameof(Solutions))]
