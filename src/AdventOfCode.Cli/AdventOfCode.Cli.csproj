@@ -19,6 +19,7 @@
 
   <PropertyGroup>
     <CodeAnalysisRuleSet>../StyleCopAnalyzers.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

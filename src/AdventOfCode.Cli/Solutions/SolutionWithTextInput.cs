@@ -1,8 +1,8 @@
 namespace Bussell.AdventOfCode.Solutions;
 
-public abstract class Solution : ISolution
+public abstract class SolutionWithTextInput : ISolution
 {
-    public Solution()
+    public SolutionWithTextInput()
     {
         Input = File.ReadAllLines(InputFileName);
     }
