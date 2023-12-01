@@ -4,8 +4,7 @@ using Bussell.AdventOfCode.Solutions;
 using Jab;
 
 [ServiceProvider]
-[Singleton(typeof(ISolution), typeof(DemoSolution))]
-[Singleton(typeof(ISolution), typeof(DemoSolution2))]
+[Singleton(typeof(ISolution), typeof(Day1))]
 internal partial class SolutionProvider
 {
 }
