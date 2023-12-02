@@ -6,7 +6,9 @@ public interface ISolution
 
     public string Name { get; }
 
-    public string SolvePart1();
+    public Func<string>[] Solutions { get; }
 
-    public string SolvePart2();
+    // public string SolvePart1();
+
+    // public string SolvePart2();
 }

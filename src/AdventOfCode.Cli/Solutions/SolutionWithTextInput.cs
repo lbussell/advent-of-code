@@ -6,7 +6,7 @@ public abstract class SolutionWithTextInput : ISolution
 {
     public SolutionWithTextInput()
     {
-        string basePath = Path.GetDirectoryName(WhereAmI())
+        string basePath = Path.GetDirectoryName(GetCallerFilePath())
             ?? throw new InvalidOperationException("Could not determine base path.");
         Input = File.ReadAllLines(Path.Combine(basePath, InputFileName));
     }
@@ -15,13 +15,13 @@ public abstract class SolutionWithTextInput : ISolution
 
     public abstract string Name { get; }
 
-    protected string InputFileName => $"../Inputs/{Day:D2}.txt";
+    public abstract Func<string>[] Solutions { get; }
 
     protected IEnumerable<string> Input { get; }
 
-    public abstract string SolvePart1();
+    private string InputFileName => $"../Inputs/{Day:D2}.input.txt";
 
-    public abstract string SolvePart2();
+    public override string ToString() => Name;
 
-    private static string WhereAmI([CallerFilePath] string callerFilePath = "") => callerFilePath;
+    private static string GetCallerFilePath([CallerFilePath] string callerFilePath = "") => callerFilePath;
 }

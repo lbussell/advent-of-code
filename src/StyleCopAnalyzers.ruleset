@@ -13,10 +13,10 @@
         <Rule Id="SA1005"  Action="Warning" />          <!-- Single line comments should begin with single space -->
         <Rule Id="SA1006"  Action="Warning" />          <!-- Preprocessor keywords should not be preceded by space -->
         <Rule Id="SA1007"  Action="Warning" />          <!-- Operator keyword should be followed by space -->
-        <Rule Id="SA1008"  Action="Warning" />          <!-- Opening parenthesis should be spaced correctly -->
+        <Rule Id="SA1008"  Action="None" />          <!-- Opening parenthesis should be spaced correctly -->
         <Rule Id="SA1009"  Action="Warning" />          <!-- Closing parenthesis should be spaced correctly -->
         <Rule Id="SA1010"  Action="None" />          <!-- Opening square brackets should be spaced correctly -->
-        <Rule Id="SA1011"  Action="Warning" />          <!-- Closing square brackets should be spaced correctly -->
+        <Rule Id="SA1011"  Action="None" />          <!-- Closing square brackets should be spaced correctly -->
         <Rule Id="SA1012"  Action="Warning" />          <!-- Opening braces should be spaced correctly -->
         <Rule Id="SA1013"  Action="Warning" />          <!-- Closing braces should be spaced correctly -->
         <Rule Id="SA1014"  Action="Warning" />          <!-- Opening generic brackets should be spaced correctly -->
@@ -83,7 +83,7 @@
         <Rule Id="SA1201"  Action="Warning" />          <!-- Elements should appear in the correct order -->
         <Rule Id="SA1202"  Action="Warning" />          <!-- Elements should be ordered by access -->
         <Rule Id="SA1203"  Action="Warning" />          <!-- Constants should appear before fields -->
-        <Rule Id="SA1204"  Action="Warning" />          <!-- Static elements should appear before instance elements -->
+        <Rule Id="SA1204"  Action="None" />          <!-- Static elements should appear before instance elements -->
         <Rule Id="SA1205"  Action="Warning" />          <!-- Partial elements should declare access -->
         <Rule Id="SA1206"  Action="Warning" />          <!-- Declaration keywords should follow order -->
         <Rule Id="SA1207"  Action="Warning" />          <!-- Protected should come before internal -->

@@ -9,7 +9,6 @@
         "kind",
         "constant",
         "accessibility",
-        "static",
         "readonly"
       ]
     },

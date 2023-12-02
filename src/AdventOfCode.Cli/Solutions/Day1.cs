@@ -1,16 +1,31 @@
 namespace Bussell.AdventOfCode.Solutions;
 
-using Result = (int Index, int Value);
-
-internal class Day1 : SolutionWithTextInput
+internal sealed class Day1 : SolutionWithTextInput
 {
-    private static readonly string[] Words = [ "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" ];
+    private static readonly string[] Words =
+    [
+        "zero",
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine"
+    ];
 
     public override int Day => 1;
 
     public override string Name => "Trebuchet?!";
 
-    public override string SolvePart1()
+    public override Func<string>[] Solutions => [
+        SolvePart1,
+        SolvePart2
+    ];
+
+    private string SolvePart1()
     {
         int sum = 0;
 
@@ -25,19 +40,16 @@ internal class Day1 : SolutionWithTextInput
         return sum.ToString();
     }
 
-    public override string SolvePart2()
+    private string SolvePart2()
     {
         int sum = 0;
-        int lineNumber = 1;
 
         foreach (ReadOnlySpan<char> line in Input)
         {
             char firstNumber = (char)(GetFirstNumber(line) + '0');
             char lastNumber = (char)(GetLastNumber(line) + '0');
             ReadOnlySpan<char> calibrationValue = [firstNumber, lastNumber];
-            int i = int.Parse(calibrationValue);
-            Console.WriteLine($"{lineNumber++} {line}: {i}");
-            sum += i;
+            sum += int.Parse(calibrationValue);
         }
 
         return sum.ToString();

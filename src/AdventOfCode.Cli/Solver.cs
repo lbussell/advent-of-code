@@ -3,44 +3,83 @@ namespace Bussell.AdventOfCode.Cli;
 using System.Diagnostics;
 using Bussell.AdventOfCode.Solutions;
 
-internal sealed class Solver
+internal sealed class Solver : ISolver
 {
+    private readonly IConfig _config;
+
     private readonly IEnumerable<ISolution> _solutions;
 
-    public Solver()
+    public Solver(IConfig config, IEnumerable<ISolution> solutions)
     {
-        SolutionProvider sp = new();
-        _solutions = sp.GetService<IEnumerable<ISolution>>().OrderBy(s => s.Day);
-        Console.WriteLine($"Found {_solutions.Count()} solutions.");
+        _config = config;
+        _solutions = solutions.OrderBy(s => s.Day);
     }
 
-    public static void ExecuteSolution(ISolution solution)
+    public void Run()
     {
-        Console.WriteLine($"Day {solution.Day:D2} - {solution.Name}");
-        ExecuteWithTimer(solution.SolvePart1);
-        ExecuteWithTimer(solution.SolvePart2);
+        if (_config.Day.HasValue)
+        {
+            SolveSpecificDay(_config.Day.Value, _config.Part);
+        }
+        else
+        {
+            SolveAllDays();
+        }
+
+        Console.WriteLine();
     }
 
-    public static void ExecuteWithTimer(Func<string> runSolution)
+    private void SolveSpecificDay(int day, int? part)
     {
-        Stopwatch sw = new();
-        sw.Start();
-        string result = runSolution();
-        sw.Stop();
-        Console.WriteLine($"Result: {result}");
-        Console.WriteLine($"Elapsed: {sw.Elapsed}");
+        IEnumerable<ISolution> solutions = _solutions.Where(s => s.Day == day);
+
+        if (!solutions.Any())
+        {
+            throw new ArgumentException($"No solution found for day {day}.");
+        }
+
+        ExecuteSolution(solutions.First(), part);
     }
 
-    public void Execute(int day)
-    {
-        ExecuteSolution(_solutions.Where(s => s.Day == day).First());
-    }
-
-    public void ExecuteAllDays()
+    private void SolveAllDays()
     {
         foreach (ISolution s in _solutions)
         {
             ExecuteSolution(s);
         }
+    }
+
+    private static void ExecuteSolution(ISolution solution, int? part = null)
+    {
+        Console.WriteLine($"\nDay {solution.Day:D2} - {solution.Name}");
+
+        if (part.HasValue)
+        {
+            Console.WriteLine($"\nPart {part}:");
+            ExecuteWithTimer(solution.Solutions[part.Value - 1]);
+            return;
+        }
+
+        for (int i = 0; i < solution.Solutions.Length; i++)
+        {
+            Console.WriteLine($"\nPart {i + 1}:");
+            ExecuteWithTimer(solution.Solutions[i]);
+        }
+    }
+
+    private static void ExecuteWithTimer(Func<string> runSolution)
+    {
+        Stopwatch sw = new();
+
+        sw.Start();
+        string result = runSolution();
+        sw.Stop();
+
+        string elapsedTime = sw.Elapsed.TotalMilliseconds > 1000
+            ? $"{sw.Elapsed.TotalSeconds:0.000} s"
+            : $"{sw.Elapsed.TotalMilliseconds:0.000} ms";
+
+        Console.WriteLine($"Result: {result}");
+        Console.WriteLine($"Elapsed: {elapsedTime}");
     }
 }
