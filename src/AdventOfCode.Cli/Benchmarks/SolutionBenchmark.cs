@@ -1,7 +1,6 @@
 namespace Bussell.AdventOfCode.Benchmarks;
 
 using BenchmarkDotNet.Attributes;
-using Bussell.AdventOfCode.Cli;
 using Bussell.AdventOfCode.Solutions;
 
 [MemoryDiagnoser]

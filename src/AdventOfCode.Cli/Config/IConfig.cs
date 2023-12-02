@@ -1,4 +1,4 @@
-namespace Bussell.AdventOfCode.Cli;
+namespace Bussell.AdventOfCode;
 
 public interface IConfig
 {
