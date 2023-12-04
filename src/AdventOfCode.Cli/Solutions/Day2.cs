@@ -4,7 +4,6 @@ using Hand = (int Red, int Green, int Blue);
 
 internal sealed class Day2(IConfig config) : SolutionWithTextInput(config)
 {
-
     public override int Day => 2;
 
     public override string Name => "Cube Conundrum";
