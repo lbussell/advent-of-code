@@ -11,6 +11,7 @@ using Jab;
 [Singleton(typeof(ISolution), typeof(Day3))]
 [Singleton(typeof(ISolution), typeof(Day4))]
 [Singleton(typeof(ISolution), typeof(Day5))]
+[Singleton(typeof(ISolution), typeof(Day6))]
 internal partial class ServiceProvider
 {
     public required IConfig ConfigInstance { get; init; }
