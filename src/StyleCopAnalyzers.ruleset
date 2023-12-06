@@ -71,7 +71,7 @@
         <Rule Id="SA1132"  Action="Warning" />          <!-- Do not combine fields -->
         <Rule Id="SA1133"  Action="Warning" />          <!-- Do not combine attributes -->
         <Rule Id="SA1134"  Action="Warning" />          <!-- Attributes should not share line -->
-        <Rule Id="SA1135"  Action="Warning" />          <!-- Using directives should be qualified -->
+        <Rule Id="SA1135"  Action="None" />          <!-- Using directives should be qualified -->
         <Rule Id="SA1136"  Action="Warning" />          <!-- Enum values should be on separate lines -->
         <Rule Id="SA1137"  Action="Warning" />          <!-- Elements should have the same indentation -->
         <Rule Id="SA1139"  Action="Warning" />          <!-- Use literal suffix notation instead of casting -->
@@ -149,10 +149,10 @@
         <Rule Id="SA1509"  Action="Warning" />          <!-- Opening braces should not be preceded by blank line -->
         <Rule Id="SA1510"  Action="Warning" />          <!-- Chained statement blocks should not be preceded by blank line -->
         <Rule Id="SA1511"  Action="Warning" />          <!-- While-do footer should not be preceded by blank line -->
-        <Rule Id="SA1512"  Action="Warning" />          <!-- Single-line comments should not be followed by blank line -->
+        <Rule Id="SA1512"  Action="None" />          <!-- Single-line comments should not be followed by blank line -->
         <Rule Id="SA1513"  Action="Warning" />          <!-- Closing brace should be followed by blank line -->
         <Rule Id="SA1514"  Action="Warning" />          <!-- Element documentation header should be preceded by blank line -->
-        <Rule Id="SA1515"  Action="Warning" />          <!-- Single-line comment should be preceded by blank line -->
+        <Rule Id="SA1515"  Action="None" />          <!-- Single-line comment should be preceded by blank line -->
         <Rule Id="SA1516"  Action="Warning" />          <!-- Elements should be separated by blank line -->
         <Rule Id="SA1517"  Action="Warning" />          <!-- Code should not contain blank lines at start of file -->
         <Rule Id="SA1518"  Action="Warning" />          <!-- Use line endings correctly at end of file -->
