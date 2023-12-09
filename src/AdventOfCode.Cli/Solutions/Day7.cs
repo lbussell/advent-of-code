@@ -1,6 +1,3 @@
-using System.Dynamic;
-using System.Text;
-
 namespace Bussell.AdventOfCode.Solutions;
 
 internal sealed class Day7(IConfig config) : SolutionWithTextInput(config)
@@ -16,16 +13,10 @@ internal sealed class Day7(IConfig config) : SolutionWithTextInput(config)
 
     private string SolvePart1()
     {
-        var hs = Input
-            .Select(s => new Hand(s))
-            .Order();
-
-        foreach (var h in hs)
-        {
-            Console.WriteLine(h.Print());
-        }
-
-        return hs
+        CardComparer cc = new();
+        return Input
+            .Select(s => new Hand(s, cc, Part.One))
+            .Order()
             .Select((h, i) => h.Bet * (i + 1))
             .Sum()
             .ToString();
@@ -33,7 +24,13 @@ internal sealed class Day7(IConfig config) : SolutionWithTextInput(config)
 
     private string SolvePart2()
     {
-        return string.Empty;
+        CardComparer cc = new Part2CardComparer();
+        return Input
+            .Select(s => new Hand(s, cc, Part.Two))
+            .Order()
+            .Select((h, i) => h.Bet * (i + 1))
+            .Sum()
+            .ToString();
     }
 
     [Flags]
@@ -48,14 +45,19 @@ internal sealed class Day7(IConfig config) : SolutionWithTextInput(config)
         FiveKind  = 0b10000,
     }
 
-    private sealed class CardComparer : IComparer<char>
+    private class CardComparer : IComparer<char>
     {
-        public static readonly char[] Order = "23456789TJQKA".ToCharArray();
+        public virtual char[] Order { get; } = "23456789TJQKA".ToCharArray();
 
         public int Compare(char x, char y)
         {
             return Array.IndexOf(Order, x) - Array.IndexOf(Order, y);
         }
+    }
+
+    private sealed class Part2CardComparer : CardComparer
+    {
+        public override char[] Order { get; } = "J23456789TQKA".ToCharArray();
     }
 
     private sealed class ReverseByteComparer : IComparer<byte>
@@ -66,93 +68,116 @@ internal sealed class Day7(IConfig config) : SolutionWithTextInput(config)
         }
     }
 
+    private enum Part
+    {
+        One,
+        Two,
+    }
+
     private readonly record struct Hand : IComparable<Hand>
     {
+        private readonly Part _part;
+        private readonly CardComparer _comparer;
+
         public readonly HandType Type { get; }
-
         public readonly int Bet { get; }
-
-        public readonly int CardsRank { get; }
-
+        public readonly int CardsScore { get; }
         public readonly char[] Cards { get; }
 
-        public Hand(string input)
+        public Hand(string input, CardComparer comparer, Part part)
         {
+            _part = part;
+            _comparer = comparer;
+
             string[] splitInput = input.Split(' ');
             Bet = int.Parse(splitInput[1]);
             Cards = splitInput[0].ToCharArray();
-            Type = CalculateHandType(Cards);
-            CardsRank = CardsToBits(Cards);
-            // Console.WriteLine(TieBreaker(_cards));
-            // Console.WriteLine($"{string.Join(',', _cards)}: {Type}");
+
+            Type = GetHandType(Cards);
+            CardsScore = GetScore(Cards);
         }
 
-        private static int CardsToBits(char[] cards)
+        private int GetScore(char[] cards)
         {
             int b = 0;
             foreach (char c in cards)
             {
-                b = (b << 4) + Array.IndexOf(CardComparer.Order, c);
+                b = (b << 4) + Array.IndexOf(_comparer.Order, c);
             }
 
             return b;
         }
 
-        private static HandType CalculateHandType(char[] cards)
+        private HandType GetHandType(char[] cards) => _part switch
+            {
+                Part.One => CalculatePart1HandType(cards),
+                _ => GetPart2HandType(cards),
+            };
+
+        private HandType CalculatePart1HandType(char[] cards)
         {
             byte[] cardCounts = new byte[13];
 
             // Count up cards of each type
             foreach (char c in cards)
             {
-                cardCounts[Array.IndexOf(CardComparer.Order, c)]++;
+                cardCounts[Array.IndexOf(_comparer.Order, c)]++;
             }
 
-            // Arrange highest card counts first
+            // Arrange highest card counts first.
+            // Using a custom comparer instead of LINQ's OrderByDescending here
+            // halves the execution time.
+            // It's also faster than Array.Sort() and then Reverse().
+            Array.Sort(cardCounts, new ReverseByteComparer());
+            return GetHandTypeBase(cardCounts);
+        }
+
+        private HandType GetPart2HandType(char[] cards)
+        {
+            byte[] cardCounts = new byte[13];
+            int numJs = cards.Where(c => c == 'J').Count();
+            cards = cards.Where(c => c != 'J').ToArray();
+
+            foreach (char c in cards)
+            {
+                cardCounts[Array.IndexOf(_comparer.Order, c)] += 1;
+            }
+
             Array.Sort(cardCounts, new ReverseByteComparer());
 
-            HandType result = HandType.HighCard;
-            for (int i = 0; i < cardCounts.Length; i += 1)
-            {
-                HandType current = TryGetFirstMatch(cardCounts[i..]);
-                result = (int)result + current;
-            }
-
-            return result;
+            // Add Js to the most frequent card
+            cardCounts[0] = (byte)(cardCounts[0] + numJs);
+            return GetHandTypeBase(cardCounts);
         }
 
         // Find the first match of the basic hand types in the byte array.
-        private static HandType TryGetFirstMatch(IEnumerable<byte> cardCounts)
-            => cardCounts.Where(b => b >= 2).FirstOrDefault() switch
-            {
-                2 => HandType.OnePair,
-                3 => HandType.ThreeKind,
-                4 => HandType.FourKind,
-                5 => HandType.FiveKind,
-                _ => HandType.HighCard,
-            };
-
-        public int CompareTo(Hand other)
+        private static HandType GetHandTypeBase(IEnumerable<byte> cardCounts)
         {
-            // int result = other.Type - this.Type;
-            // if (result == 0)
-            // {
-            //     result = other.CardsRank - this.CardsRank;
-            // }
-
-            // return result;
-            int result = this.Type - other.Type;
-            if (result == 0)
+            HandType result = HandType.HighCard;
+            foreach (byte count in cardCounts)
             {
-                result = this.CardsRank - other.CardsRank;
+                result = (int)result + count switch
+                {
+                    2 => HandType.OnePair,
+                    3 => HandType.ThreeKind,
+                    4 => HandType.FourKind,
+                    5 => HandType.FiveKind,
+                    _ => HandType.HighCard,
+                };
             }
 
             return result;
         }
 
-        public string Print()
+        public int CompareTo(Hand other)
         {
-            return $"[{string.Join(',', Cards)}], {ToString()}";
+            int result = this.Type - other.Type;
+            if (result == 0)
+            {
+                result = this.CardsScore - other.CardsScore;
+            }
+
+            return result;
         }
     }
 }
