@@ -31,7 +31,7 @@ internal sealed class Day8(IConfig config) : SolutionWithTextInput(config)
             .Sum()
             .ToString();
 
-    private int Predict(int[] input, bool reverse = false)
+    private static int Predict(int[] input, bool reverse = false)
     {
         if (input.All(i => i == 0))
         {
