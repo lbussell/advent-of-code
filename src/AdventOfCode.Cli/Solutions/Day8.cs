@@ -1,5 +1,3 @@
-using Microsoft.CodeAnalysis.Emit;
-
 namespace Bussell.AdventOfCode.Solutions;
 
 internal sealed class Day8(IConfig config) : SolutionWithTextInput(config)
