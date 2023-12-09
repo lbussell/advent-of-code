@@ -45,6 +45,6 @@ internal sealed class Day8(IConfig config) : SolutionWithTextInput(config)
 
         return reverse
             ? input.First() - Predict(diff, reverse)
-            : input.First() + Predict(diff, reverse);
+            : input.Last() + Predict(diff, reverse);
     }
 }
