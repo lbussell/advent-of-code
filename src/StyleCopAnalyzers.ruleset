@@ -30,7 +30,7 @@
         <Rule Id="SA1022"  Action="Warning" />          <!-- Positive signs should be spaced correctly -->
         <Rule Id="SA1023"  Action="Warning" />          <!-- Dereference and access of symbols should be spaced correctly -->
         <Rule Id="SA1024"  Action="Warning" />          <!-- Colons should be spaced correctly -->
-        <Rule Id="SA1025"  Action="Warning" />          <!-- Code should not contain multiple whitespace in a row -->
+        <Rule Id="SA1025"  Action="None" />          <!-- Code should not contain multiple whitespace in a row -->
         <Rule Id="SA1026"  Action="Warning" />          <!-- Code should not contain space after new or stackalloc keyword in implicitly typed array allocation -->
         <Rule Id="SA1027"  Action="Warning" />          <!-- Use tabs correctly -->
         <Rule Id="SA1028"  Action="Warning" />          <!-- Code should not contain trailing whitespace -->
@@ -80,7 +80,7 @@
 
     <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.OrderingRules">
         <Rule Id="SA1200"  Action="Warning" />          <!-- Using directives should be placed correctly -->
-        <Rule Id="SA1201"  Action="Warning" />          <!-- Elements should appear in the correct order -->
+        <Rule Id="SA1201"  Action="None" />          <!-- Elements should appear in the correct order -->
         <Rule Id="SA1202"  Action="Warning" />          <!-- Elements should be ordered by access -->
         <Rule Id="SA1203"  Action="Warning" />          <!-- Constants should appear before fields -->
         <Rule Id="SA1204"  Action="None" />          <!-- Static elements should appear before instance elements -->
