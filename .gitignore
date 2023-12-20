@@ -351,3 +351,6 @@ MigrationBackup/
 
 # Ignore real advent of code inputs
 *.input.txt
+*.txt
+Inputs
+TestInputs

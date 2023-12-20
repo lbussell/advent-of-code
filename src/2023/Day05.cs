@@ -1,22 +1,24 @@
-namespace Bussell.AdventOfCode.Solutions;
+namespace AdventOfCode.Solutions2023;
 
-internal sealed class Day5(IConfig config) : SolutionWithTextInput(config)
+public sealed class Day05 : ISolution
 {
-    public override int Day => 5;
+    public int Year => 2023;
 
-    public override string Name => "If You Give A Seed A Fertilizer";
+    public int Day => 5;
 
-    public override Func<string>[] Solutions => [
+    public string Name => "If You Give A Seed A Fertilizer";
+
+    public Func<IEnumerable<string>, string>[] Solutions => [
         SolvePart1,
         SolvePart2
     ];
 
-    private string SolvePart1()
+    private static string SolvePart1(IEnumerable<string> input)
     {
-        IEnumerable<long> seeds = ParseSeeds(Input.First());
+        IEnumerable<long> seeds = ParseSeeds(input.First());
 
         // Avoid multiple enumeration
-        var mapGroups = ParseRanges(Input.Skip(1).Where(s => !string.IsNullOrEmpty(s))).ToArray();
+        var mapGroups = ParseRanges(input.Skip(1).Where(s => !string.IsNullOrEmpty(s))).ToArray();
 
         return seeds
             .Select(seed => Trace(
@@ -28,12 +30,12 @@ internal sealed class Day5(IConfig config) : SolutionWithTextInput(config)
             .ToString();
     }
 
-    private string SolvePart2()
+    private string SolvePart2(IEnumerable<string> input)
     {
-        IEnumerable<LongRange> seeds = ParseSeeds2(Input.First());
+        IEnumerable<LongRange> seeds = ParseSeeds2(input.First());
 
         // Run it in reverse
-        var mapGroups = ParseRanges(Input.Skip(1).Where(s => !string.IsNullOrEmpty(s)))
+        var mapGroups = ParseRanges(input.Skip(1).Where(s => !string.IsNullOrEmpty(s)))
             .Reverse()
             .ToArray();
 
@@ -112,15 +114,15 @@ internal sealed class Day5(IConfig config) : SolutionWithTextInput(config)
     // Example input:
     // seeds: 79 14 55 13
     private static IEnumerable<long> ParseSeeds(string inp)
-        => inp.Split(':', Util.SSOpts)
+        => inp.Split(':', Constants.SSOpts)
             .ToArray()[1]
-            .Split(' ', Util.SSOpts)
+            .Split(' ', Constants.SSOpts)
             .Select(long.Parse);
 
     private static IEnumerable<LongRange> ParseSeeds2(string inp)
-        => inp.Split(':', Util.SSOpts)
+        => inp.Split(':', Constants.SSOpts)
             .ToArray()[1]
-            .Split(' ', Util.SSOpts)
+            .Split(' ', Constants.SSOpts)
             .Chunk(2)
             .Select(s => s.Select(long.Parse).ToArray())
             .Select(lr => new LongRange(lr[0], lr[0] + lr[1]));

@@ -1,17 +1,21 @@
-namespace Bussell.AdventOfCode.Solutions;
+namespace AdventOfCode.Solutions2023;
 
-internal sealed class Day8(IConfig config) : SolutionWithTextInput(config)
+using AdventOfCode.Core;
+
+public sealed class Day09() : ISolution
 {
-    public override int Day => 8;
+    public int Year => 2023;
 
-    public override string Name => "OASIS";
+    public int Day => 9;
 
-    public override Func<string>[] Solutions => [
+    public string Name => "OASIS";
+
+    public Func<IEnumerable<string>, string>[] Solutions => [
         SolvePart1,
         SolvePart2
     ];
 
-    private string SolvePart1() => Input
+    private static string SolvePart1(IEnumerable<string> input) => input
             .Select(s => s
                 .Split(' ')
                 .Select(int.Parse)
@@ -20,7 +24,7 @@ internal sealed class Day8(IConfig config) : SolutionWithTextInput(config)
             .Sum()
             .ToString();
 
-    private string SolvePart2() => Input
+    private static string SolvePart2(IEnumerable<string> input) => input
             .Select(s => s
                 .Split(' ')
                 .Select(int.Parse)

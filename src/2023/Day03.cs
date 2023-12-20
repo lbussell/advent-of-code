@@ -1,44 +1,38 @@
-namespace Bussell.AdventOfCode.Solutions;
+namespace AdventOfCode.Solutions2023;
 
 using Size = (int Height, int Width);
 
-internal sealed class Day3 : SolutionWithTextInput
+public sealed class Day03 : ISolution
 {
-    private readonly char[][] _engine;
+    public int Year => 2023;
 
-    private readonly Size _engineSize;
+    public int Day => 3;
 
-    public Day3(IConfig config)
-        : base(config)
-    {
-        _engine = Input.Select(s => s.ToCharArray()).ToArray();
-        _engineSize = (_engine.Length, _engine[0].Length);
-    }
+    public string Name => "Gear Ratios";
 
-    public override int Day => 3;
-
-    public override string Name => "Gear Ratios";
-
-    public override Func<string>[] Solutions => [
+    public Func<IEnumerable<string>, string>[] Solutions => [
         SolvePart1,
         SolvePart2
     ];
 
-    private string SolvePart1()
+    private string SolvePart1(IEnumerable<string> input)
     {
+        char[][] engine = input.Select(s => s.ToCharArray()).ToArray();
+        Size engineSize = (engine.Length, engine[0].Length);
+
         int sumOfPartNumbers = 0;
 
-        for (int r = 0; r < _engineSize.Height; r++)
+        for (int r = 0; r < engineSize.Height; r++)
         {
-            for (int c = 0; c < _engineSize.Width; c++)
+            for (int c = 0; c < engineSize.Width; c++)
             {
-                if (char.IsDigit(_engine[r][c]))
+                if (char.IsDigit(engine[r][c]))
                 {
                     int numberLength = 0;
-                    while (char.IsDigit(_engine[r][c + numberLength]))
+                    while (char.IsDigit(engine[r][c + numberLength]))
                     {
                         numberLength += 1;
-                        if (c + numberLength >= _engineSize.Width)
+                        if (c + numberLength >= engineSize.Width)
                         {
                             break;
                         }
@@ -55,7 +49,7 @@ internal sealed class Day3 : SolutionWithTextInput
                                 continue;
                             }
 
-                            if (r2 < 0 || r2 >= _engineSize.Height || c2 < 0 || c2 >= _engineSize.Width)
+                            if (r2 < 0 || r2 >= engineSize.Height || c2 < 0 || c2 >= engineSize.Width)
                             {
                                 continue;
                             }
@@ -65,14 +59,14 @@ internal sealed class Day3 : SolutionWithTextInput
                                 continue;
                             }
 
-                            if (_engine[r2][c2] != '.')
+                            if (engine[r2][c2] != '.')
                             {
                                 shouldCountPart = true;
                             }
                         }
                     }
 
-                    int partNumber = int.Parse(_engine[r].AsSpan()[c..(c + numberLength)]);
+                    int partNumber = int.Parse(engine[r].AsSpan()[c..(c + numberLength)]);
 
                     if (shouldCountPart)
                     {
@@ -87,16 +81,19 @@ internal sealed class Day3 : SolutionWithTextInput
         return sumOfPartNumbers.ToString();
     }
 
-    private string SolvePart2()
+    private string SolvePart2(IEnumerable<string> input)
     {
+        char[][] engine = input.Select(s => s.ToCharArray()).ToArray();
+        Size engineSize = (engine.Length, engine[0].Length);
+
         int sum = 0;
-        for (int r = 0; r < _engineSize.Height; r++)
+        for (int r = 0; r < engineSize.Height; r++)
         {
-            for (int c = 0; c < _engineSize.Width; c++)
+            for (int c = 0; c < engineSize.Width; c++)
             {
-                if (_engine[r][c] == '*')
+                if (engine[r][c] == '*')
                 {
-                    int gr = GetGearRatio(r, c);
+                    int gr = GetGearRatio(engine, engineSize, r, c);
                     if (gr != -1)
                     {
                         sum += gr;
@@ -108,7 +105,7 @@ internal sealed class Day3 : SolutionWithTextInput
         return sum.ToString();
     }
 
-    private int GetGearRatio(int rStart, int cStart)
+    private static int GetGearRatio(char[][] engine, Size engineSize, int rStart, int cStart)
     {
         int gear1 = -1;
         int gear2 = -1;
@@ -117,14 +114,14 @@ internal sealed class Day3 : SolutionWithTextInput
         {
             for (int c = cStart - 1; c < cStart + 2; c++)
             {
-                if (!CheckBounds(r, c))
+                if (!CheckBounds(engineSize, r, c))
                 {
                     continue;
                 }
 
-                if (char.IsDigit(_engine[r][c]))
+                if (char.IsDigit(engine[r][c]))
                 {
-                    int n = ExpandNumber(r, ref c);
+                    int n = ExpandNumber(engine, engineSize, r, ref c);
                     if (gear1 == -1)
                     {
                         gear1 = n;
@@ -141,24 +138,24 @@ internal sealed class Day3 : SolutionWithTextInput
         return -1;
     }
 
-    private int ExpandNumber(int r, ref int c)
+    private static int ExpandNumber(char[][] engine, Size engineSize, int r, ref int c)
     {
         int left = c, right = c;
 
-        while (left >= 0 && char.IsDigit(_engine[r][left]))
+        while (left >= 0 && char.IsDigit(engine[r][left]))
         {
             left -= 1;
         }
 
-        while (c < _engineSize.Width && char.IsDigit(_engine[r][c]))
+        while (c < engineSize.Width && char.IsDigit(engine[r][c]))
         {
             c += 1;
         }
 
-        int number = int.Parse(_engine[r].AsSpan()[(left + 1)..c]);
+        int number = int.Parse(engine[r].AsSpan()[(left + 1)..c]);
         return number;
     }
 
-    private bool CheckBounds(int r, int c)
-        => r >= 0 && r < _engineSize.Height && c >= 0 && c < _engineSize.Width;
+    private static bool CheckBounds(Size engineSize, int r, int c)
+        => r >= 0 && r < engineSize.Height && c >= 0 && c < engineSize.Width;
 }

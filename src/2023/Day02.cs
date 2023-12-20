@@ -1,30 +1,32 @@
-namespace Bussell.AdventOfCode.Solutions;
+namespace AdventOfCode.Solutions2023;
 
 using Hand = (int Red, int Green, int Blue);
 
-internal sealed class Day2(IConfig config) : SolutionWithTextInput(config)
+public sealed class Day02 : ISolution
 {
-    public override int Day => 2;
+    public int Year => 2023;
 
-    public override string Name => "Cube Conundrum";
+    public int Day => 2;
 
-    public override Func<string>[] Solutions => [
+    public string Name => "Cube Conundrum";
+
+    public Func<IEnumerable<string>, string>[] Solutions => [
         SolvePart1,
         SolvePart2
     ];
 
-    private string SolvePart1()
+    private static string SolvePart1(IEnumerable<string> input)
     {
-        IEnumerable<Game> games = GetGames(Input);
+        IEnumerable<Game> games = GetGames(input);
         return games
             .Select((g, i) => g.IsPossible() ? i + 1 : 0)
             .Sum()
             .ToString();
     }
 
-    private string SolvePart2()
+    private static string SolvePart2(IEnumerable<string> input)
     {
-        IEnumerable<Game> games = GetGames(Input);
+        IEnumerable<Game> games = GetGames(input);
         return games
             .Select(g => g.GetMinimumCubesPower())
             .Sum()

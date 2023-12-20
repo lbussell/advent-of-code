@@ -1,29 +1,26 @@
-namespace Bussell.AdventOfCode.Solutions;
+namespace AdventOfCode.Solutions2023;
 
-internal sealed class Day4(IConfig config) : SolutionWithTextInput(config)
+public sealed class Day04 : ISolution
 {
-    public const StringSplitOptions SSOpts =
-        StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries;
+    public int Year => 4;
 
-    public override int Day => 4;
+    public int Day => 4;
 
-    public override string Name => "Scratchcards";
+    public string Name => "Scratchcards";
 
-    public override Func<string>[] Solutions => [
+    public Func<IEnumerable<string>, string>[] Solutions => [
         SolvePart1,
         SolvePart2
     ];
 
-    private string SolvePart1()
-    {
-        return Input.Select(s => new ScratchOffCard(s)).Select(c => c.Score).Sum().ToString();
-    }
+    private static string SolvePart1(IEnumerable<string> input)
+        => input.Select(s => new ScratchOffCard(s)).Select(c => c.Score).Sum().ToString();
 
-    private string SolvePart2()
+    private static string SolvePart2(IEnumerable<string> input)
     {
         int totalCards = 0;
 
-        ScratchOffCard[] cards = Input.Select(s => new ScratchOffCard(s)).ToArray();
+        ScratchOffCard[] cards = input.Select(s => new ScratchOffCard(s)).ToArray();
         int[] matches = cards.Select(c => c.Matches).ToArray();
 
         Queue<int> cardQ = new();
@@ -60,7 +57,7 @@ internal sealed class ScratchOffCard
         int[][] inputs = input.Split(':')[1]
             .Split('|')
             .Select(s => s.Trim())
-            .Select(s => s.Split(' ', Day4.SSOpts))
+            .Select(s => s.Split(' ', Constants.SSOpts))
             .Select(s => s.Select(int.Parse).ToArray())
             .ToArray();
 
@@ -69,7 +66,7 @@ internal sealed class ScratchOffCard
 
         CardNumber = int.Parse(input.Split(':')[0]
             .Trim()
-            .Split(' ', Day4.SSOpts)[1]);
+            .Split(' ', Constants.SSOpts)[1]);
     }
 
     // The first match is worth one point, then each match after that doubles the point value of the card.

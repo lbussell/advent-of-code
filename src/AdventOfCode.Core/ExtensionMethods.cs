@@ -1,8 +1,8 @@
-namespace Bussell.AdventOfCode;
+namespace AdventOfCode.Core;
 
 using System.Numerics;
 
-internal static class ExtensionMethods
+public static class ExtensionMethods
 {
     public static int Product(this IEnumerable<int> source) => Product<int, int>(source);
 

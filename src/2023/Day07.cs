@@ -1,20 +1,24 @@
-namespace Bussell.AdventOfCode.Solutions;
+namespace AdventOfCode.Solutions2023;
 
-internal sealed class Day7(IConfig config) : SolutionWithTextInput(config)
+using AdventOfCode.Core;
+
+public sealed class Day07 : ISolution
 {
-    public override int Day => 7;
+    public int Year => 2023;
 
-    public override string Name => "Camel Cards";
+    public int Day => 7;
 
-    public override Func<string>[] Solutions => [
+    public string Name => "Camel Cards";
+
+    public Func<IEnumerable<string>, string>[] Solutions => [
         SolvePart1,
         SolvePart2
     ];
 
-    private string SolvePart1()
+    private static string SolvePart1(IEnumerable<string> input)
     {
         CardComparer cc = new();
-        return Input
+        return input
             .Select(s => new Hand(s, cc, Part.One))
             .Order()
             .Select((h, i) => h.Bet * (i + 1))
@@ -22,10 +26,10 @@ internal sealed class Day7(IConfig config) : SolutionWithTextInput(config)
             .ToString();
     }
 
-    private string SolvePart2()
+    private static string SolvePart2(IEnumerable<string> input)
     {
         CardComparer cc = new Part2CardComparer();
-        return Input
+        return input
             .Select(s => new Hand(s, cc, Part.Two))
             .Order()
             .Select((h, i) => h.Bet * (i + 1))

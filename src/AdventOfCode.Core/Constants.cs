@@ -1,6 +1,6 @@
-namespace Bussell.AdventOfCode;
+namespace AdventOfCode.Core;
 
-public static class Util
+public static class Constants
 {
     public const StringSplitOptions SSOpts =
         StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries;

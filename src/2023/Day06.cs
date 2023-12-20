@@ -1,20 +1,24 @@
-namespace Bussell.AdventOfCode.Solutions;
+namespace AdventOfCode.Solutions2023;
 
-internal sealed class Day6(IConfig config) : SolutionWithTextInput(config)
+using AdventOfCode.Core;
+
+public sealed class Day06 : ISolution
 {
-    public override int Day => 6;
+    public int Year => 2023;
 
-    public override string Name => "Wait For It";
+    public int Day => 6;
 
-    public override Func<string>[] Solutions => [
+    public string Name => "Wait For It";
+
+    public Func<IEnumerable<string>, string>[] Solutions => [
         SolvePart1,
         SolvePart2
     ];
 
-    private string SolvePart1()
+    private static string SolvePart1(IEnumerable<string> input)
     {
-        IEnumerable<int> times = Parse(Input.First());
-        IEnumerable<int> distances = Parse(Input.Skip(1).First());
+        IEnumerable<int> times = Parse(input.First());
+        IEnumerable<int> distances = Parse(input.Skip(1).First());
 
         IEnumerable<BoatRace> boatRaces = times.Zip(distances)
             .Select(td => new BoatRace(td.First, td.Second));
@@ -25,10 +29,10 @@ internal sealed class Day6(IConfig config) : SolutionWithTextInput(config)
             .ToString();
     }
 
-    private string SolvePart2()
+    private static string SolvePart2(IEnumerable<string> input)
     {
-        long t = Parse2(Input.First());
-        long d = Parse2(Input.Skip(1).First());
+        long t = Parse2(input.First());
+        long d = Parse2(input.Skip(1).First());
         long result = 0;
         for (long ht = 1; ht < t; ht += 1)
         {
@@ -42,15 +46,15 @@ internal sealed class Day6(IConfig config) : SolutionWithTextInput(config)
     }
 
     private static IEnumerable<int> Parse(string input)
-        => input.Split(':', Util.SSOpts)
+        => input.Split(':', Constants.SSOpts)
             .ToArray()[1]
-            .Split(' ', Util.SSOpts)
+            .Split(' ', Constants.SSOpts)
             .Select(int.Parse);
 
     private static long Parse2(string input)
-        => long.Parse(input.Split(':', Util.SSOpts)
+        => long.Parse(input.Split(':', Constants.SSOpts)
             .ToArray()[1]
-            .Split(' ', Util.SSOpts)
+            .Split(' ', Constants.SSOpts)
             .Aggregate(string.Concat));
 }
 

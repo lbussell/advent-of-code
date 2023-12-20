@@ -1,6 +1,9 @@
-namespace Bussell.AdventOfCode.Solutions;
+namespace AdventOfCode.Solutions2023;
 
-internal sealed class Day1(IConfig config) : SolutionWithTextInput(config)
+using System.Collections.Generic;
+using AdventOfCode.Core;
+
+public sealed class Day01() : ISolution
 {
     private static readonly string[] Words =
     [
@@ -16,21 +19,22 @@ internal sealed class Day1(IConfig config) : SolutionWithTextInput(config)
         "nine"
     ];
 
-    public override int Day => 1;
+    public int Day => 1;
 
-    public override string Name => "Trebuchet?!";
+    public string Name => "Trebuchet?!";
 
-    public override Func<string>[] Solutions => [
+    public Func<IEnumerable<string>, string>[] Solutions => [
         SolvePart1,
         SolvePart2,
-        SolvePart2Take2
     ];
 
-    private string SolvePart1()
+    public int Year => throw new NotImplementedException();
+
+    private static string SolvePart1(IEnumerable<string> input)
     {
         int sum = 0;
 
-        foreach (ReadOnlySpan<char> s in Input)
+        foreach (ReadOnlySpan<char> s in input)
         {
             sum += GetPart1CalibrationValue(s);
         }
@@ -38,7 +42,7 @@ internal sealed class Day1(IConfig config) : SolutionWithTextInput(config)
         return sum.ToString();
     }
 
-    private int GetPart1CalibrationValue(ReadOnlySpan<char> s)
+    private static int GetPart1CalibrationValue(ReadOnlySpan<char> s)
     {
         int firstIndex = s.IndexOfAnyInRange('0', '9');
         int lastIndex = s.LastIndexOfAnyInRange('0', '9');
@@ -46,11 +50,11 @@ internal sealed class Day1(IConfig config) : SolutionWithTextInput(config)
         return int.Parse(calibrationValue);
     }
 
-    private string SolvePart2()
+    private static string SolvePart2(IEnumerable<string> input)
     {
         int sum = 0;
 
-        foreach (ReadOnlySpan<char> line in Input)
+        foreach (ReadOnlySpan<char> line in input)
         {
             char firstNumber = (char)(GetFirstNumber(line) + '0');
             char lastNumber = (char)(GetLastNumber(line) + '0');
@@ -61,10 +65,10 @@ internal sealed class Day1(IConfig config) : SolutionWithTextInput(config)
         return sum.ToString();
     }
 
-    private string SolvePart2Take2()
+    private static string SolvePart2Take2(IEnumerable<string> input)
     {
         int sum = 0;
-        foreach (string line in Input)
+        foreach (string line in input)
         {
             string s = line.Replace("zero", "0o");
             s = s.Replace("one", "o1e");
