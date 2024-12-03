@@ -1,22 +1,20 @@
 ﻿namespace AdventOfCode
 
 open System
-open System.IO
+open AdventOfCode.Solutions
 
 module Program =
-    let allSolutions: Map<int, (string array -> int) list> = Map [
-        1, [Day1.solvePart1; Day1.solvePart2];
-    ]
-
     let runOne day: string =
-        let solvers = (Map.find day allSolutions)
-        let input: string array = File.ReadAllLines $"./Inputs/{day}.txt"
-        let outputs: int list = solvers |> List.map (fun solver -> solver input)
+        let solvers = Map.find day Solutions.all
+        let input = Solutions.loadInput day
+        let outputs = solvers |> List.map (fun solver -> solver input)
         let outputsString = String.Join(", ", (outputs |> List.map string))
         $"Day {day} solutions: {outputsString}"
 
     let runAll (solutions: Map<int, (string array -> int) list>): string list =
-        solutions.Keys |> Seq.toList |> List.map runOne
+        solutions.Keys
+        |> Seq.toList
+        |> List.map runOne
 
     [<EntryPoint>]
     let main args =
@@ -24,7 +22,7 @@ module Program =
 
         let answers =
             match args with
-            | [| "all" |] -> runAll allSolutions
+            | [| "all" |] -> runAll Solutions.all
             | [| s |] -> [s |> int |> runOne]
             | _ -> failwith "Unexpected set of arguments"
 

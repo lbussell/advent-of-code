@@ -5,7 +5,11 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FFB42559-18C8-4B38-B159-8BDCE2D31021}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AdventOfCode.Solutions", "src\AdventOfCode\AdventOfCode.Solutions.fsproj", "{3A7AAB8A-DED2-40F0-9ACC-72E8D1983DA8}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AdventOfCode.Solutions", "src\AdventOfCode.Solutions\AdventOfCode.Solutions.fsproj", "{3A7AAB8A-DED2-40F0-9ACC-72E8D1983DA8}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AdventOfCode.Tests", "src\AdventOfCode.Tests\AdventOfCode.Tests.fsproj", "{937DAB4F-FA55-4443-A026-AF2917A56DFC}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AdventOfCode", "src\AdventOfCode\AdventOfCode.fsproj", "{EA9764FB-6968-4704-9CA2-B4396B3CBC31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,8 +24,18 @@ Global
 		{3A7AAB8A-DED2-40F0-9ACC-72E8D1983DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A7AAB8A-DED2-40F0-9ACC-72E8D1983DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A7AAB8A-DED2-40F0-9ACC-72E8D1983DA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{937DAB4F-FA55-4443-A026-AF2917A56DFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{937DAB4F-FA55-4443-A026-AF2917A56DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{937DAB4F-FA55-4443-A026-AF2917A56DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{937DAB4F-FA55-4443-A026-AF2917A56DFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA9764FB-6968-4704-9CA2-B4396B3CBC31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA9764FB-6968-4704-9CA2-B4396B3CBC31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA9764FB-6968-4704-9CA2-B4396B3CBC31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA9764FB-6968-4704-9CA2-B4396B3CBC31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3A7AAB8A-DED2-40F0-9ACC-72E8D1983DA8} = {FFB42559-18C8-4B38-B159-8BDCE2D31021}
+		{937DAB4F-FA55-4443-A026-AF2917A56DFC} = {FFB42559-18C8-4B38-B159-8BDCE2D31021}
+		{EA9764FB-6968-4704-9CA2-B4396B3CBC31} = {FFB42559-18C8-4B38-B159-8BDCE2D31021}
 	EndGlobalSection
 EndGlobal

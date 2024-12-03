@@ -484,4 +484,4 @@ $RECYCLE.BIN/
 *.swp
 
 # AOC
-src/AdventOfCode/Inputs
+src/AdventOfCode.Solutions/Inputs
