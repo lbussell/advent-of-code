@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Inputs\*.txt" />
     <Compile Include="Common.fs" />
     <Compile Include="Solutions\Day1.fs" />
     <Compile Include="Solutions.fs" />

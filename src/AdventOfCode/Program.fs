@@ -1,31 +1,61 @@
 ﻿namespace AdventOfCode
 
 open System
+open System.IO
+open System.Diagnostics
+
+open AdventOfCode.Common
 open AdventOfCode.Solutions
 
 module Program =
-    let runOne day: string =
-        let solvers = Map.find day Solutions.all
-        let input = Solutions.loadInput day
-        let outputs = solvers |> List.map (fun solver -> solver input)
-        let outputsString = String.Join(", ", (outputs |> List.map string))
-        $"Day {day} solutions: {outputsString}"
 
-    let runAll (solutions: Map<int, (string array -> int) list>): string list =
-        solutions.Keys
+    let loadEnv path =
+        path
+        |> File.ReadAllLines
         |> Seq.toList
-        |> List.map runOne
+        |> List.map (Tuple2.parse "=")
+        |> dict
 
     [<EntryPoint>]
     let main args =
-        printfn $"Arguments passed to function : %A{args}"
+        let printUsage = 
+            "Missing some required arguments" |> Console.WriteLine
+            "Usage: dotnet run -- /path/to/inputs <1|2|3|...|all>" |> Console.WriteLine
+            0
 
-        let answers =
+        let time (f: unit -> int) =
+            let stopwatch = Stopwatch.StartNew()
+            let result = f ()
+            stopwatch.Stop()
+            (result, stopwatch.Elapsed)
+
+        let format day part result t =
+            $"Day {day} Part {part + 1} = {result} ({t})" 
+
+        let runPart day part solver input =
+            let f = fun () -> solver input 
+            let result = f |> time
+            result ||> (format day part) |> Console.WriteLine
+            result
+
+        let runDay inputsDir day =
+            let solvers = Map.find day Solutions.all
+            let input = Path.Combine(inputsDir, $"{day}.txt") |> File.ReadAllLines
+            solvers |> List.mapi (fun i solver -> runPart day i solver input)
+
+        let runDays inputsDir days =
+            days |> List.map (fun day -> runDay inputsDir day)
+
+        let getDays daysArg =
+            match daysArg with
+            | "all" -> Solutions.all.Keys |> Seq.toList
+            | n -> [int n]
+
+        let run (args: string array) =
             match args with
-            | [| "all" |] -> runAll Solutions.all
-            | [| s |] -> [s |> int |> runOne]
-            | _ -> failwith "Unexpected set of arguments"
+            | [| inputsDir; daysArg |] -> runDays inputsDir (getDays daysArg) |> ignore
+            | _ -> printUsage |> ignore
 
-        answers |> List.map Console.WriteLine |> ignore
+        args |> run
 
         0
