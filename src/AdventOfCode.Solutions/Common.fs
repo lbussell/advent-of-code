@@ -1,5 +1,15 @@
 namespace AdventOfCode.Common
 
+open System.Diagnostics
+
+module Diagnostics =
+    let time (f: unit -> int) =
+        let stopwatch = Stopwatch.StartNew()
+        let result = f ()
+        stopwatch.Stop()
+        (result, stopwatch.Elapsed)
+
+
 module Tuple2 =
 
     let map f (a, b) = (f a, f b)

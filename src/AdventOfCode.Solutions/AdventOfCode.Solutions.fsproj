@@ -7,7 +7,10 @@
 
   <ItemGroup>
     <Compile Include="Common.fs" />
+    <Compile Include="Solutions\DayTemplate.fs" />
     <Compile Include="Solutions\Day1.fs" />
+    <Compile Include="Solutions\Day2.fs" />
+    <Compile Include="Solutions\Day3.fs" />
     <Compile Include="Solutions.fs" />
   </ItemGroup>
 
