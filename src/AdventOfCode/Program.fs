@@ -23,10 +23,7 @@ module Program =
 
     let runWithLogging day part input =
         let solver = Solutions.getSolver day part
-
-        let log result time =
-            printfn "Day %d Part %d: %d (%A)" day (part + 1) result time
-
+        let log result time = printfn "Day %d Part %d: %d (%A)" day (part + 1) result time
         (fun () -> solver input)
             |> Diagnostics.time
             ||> log

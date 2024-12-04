@@ -12,6 +12,10 @@ module Diagnostics =
 
 module Tuple2 =
 
+    let diff (a, b) = b - a
+
+    let diff2 (a, b) = a - b
+
     let map f (a, b) = (f a, f b)
 
     let parse (d: string) (s: string) =
