@@ -18,6 +18,8 @@ module Tests =
     [<InlineData(2, 1, "2d.txt", 1)>]
     [<InlineData(3, 0, "3a.txt", 161)>]
     [<InlineData(3, 1, "3b.txt", 48)>]
+    [<InlineData(4, 0, "4a.txt", 18)>]
+    [<InlineData(4, 1, "4a.txt", 9)>]
     let ``Test day`` day part inputFile expectedOutput =
         let input = inputFile |> File.ReadAllLines
         let solver = Solutions.getSolver day part

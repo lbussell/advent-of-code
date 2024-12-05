@@ -6,6 +6,7 @@ module Solutions =
         1, [Day1.solvePart1; Day1.solvePart2];
         2, [Day2.solvePart1; Day2.solvePart2];
         3, [Day3.solvePart1; Day3.solvePart2];
+        4, [Day4.solvePart1; Day4.solvePart2];
     ]
 
     let getSolvers day =
