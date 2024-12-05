@@ -22,3 +22,8 @@ module Tuple2 =
         match s |> _.Split(d) with
         | [| a; b |] -> (a, b)
         | _ -> failwith $"Could not parse tuple from `{s}` and delimiter `{d}`"
+
+    let parseIntList (l: int list) =
+        match l with
+        | [ a; b ] -> (a, b)
+        | _ -> failwith $"Could not parse tuple from `{l}`"
