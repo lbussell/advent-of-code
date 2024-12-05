@@ -2,7 +2,6 @@ module Day4
 
 open System.Text.RegularExpressions
 
-let reg = Regex("XMAS|SAMX")
 let sep = "-"
 let _or = "|"
 let positiveLookahead s = $"(?={s})"
@@ -38,7 +37,7 @@ let solvePart1 (input: string array) =
 let solvePart2 (input: string array) =
     let len = input[0].Length
     let nextLine = sprintf ".{%d}" (len-1)
-    let pattern = positiveLookahead <| String.concat "" [ 
+    let pattern = positiveLookahead <| String.concat "" [
             "M.S"; nextLine;
             "A";   nextLine;
             "M.S";
