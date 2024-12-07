@@ -1,8 +1,8 @@
 {
   "profiles": {
-    "Day 2": {
+    "Day 5": {
       "commandName": "Project",
-      "commandLineArgs": "4",
+      "commandLineArgs": "5",
       "workingDirectory": "C:\\s\\advent-of-code\\src\\Inputs"
     }
   }

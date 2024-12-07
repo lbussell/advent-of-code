@@ -20,6 +20,7 @@ module Tests =
     [<InlineData(3, 1, "3b.txt", 48)>]
     [<InlineData(4, 0, "4a.txt", 18)>]
     [<InlineData(4, 1, "4a.txt", 9)>]
+    [<InlineData(5, 0, "5a.txt", 143)>]
     let ``Test day`` day part inputFile expectedOutput =
         let input = inputFile |> File.ReadAllLines
         let solver = Solutions.getSolver day part

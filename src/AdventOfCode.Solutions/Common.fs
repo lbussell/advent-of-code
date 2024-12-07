@@ -27,3 +27,5 @@ module Tuple2 =
         match l with
         | [ a; b ] -> (a, b)
         | _ -> failwith $"Could not parse tuple from `{l}`"
+
+    let swap (a, b) = (b, a)
