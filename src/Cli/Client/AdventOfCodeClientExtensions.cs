@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
-namespace AdventOfCode.Cli;
+namespace AdventOfCode.Cli.Client;
 
 internal static class AdventOfCodeClientExtensions
 {
@@ -15,7 +15,12 @@ internal static class AdventOfCodeClientExtensions
         // We also need to set property EnableConfigurationBindingGenerator to true or else we will
         // get trimming/AOT warnings.
         var aocOptionsSection = builder.Configuration.GetSection(nameof(AdventOfCodeOptions));
-        builder.Services.Configure<AdventOfCodeOptions>(aocOptionsSection);
+        builder.Services.AddOptions<AdventOfCodeOptions>()
+            .Bind(aocOptionsSection)
+            .ValidateOnStart();
+
+        // Register the source generated options validator for AdventOfCodeOptions.
+        builder.Services.AddSingleton<IValidateOptions<AdventOfCodeOptions>, ValidateAdventOfCodeOptions>();
 
         builder.Services.AddHttpClient<AdventOfCodeClient>((serviceProvider, httpClient) =>
         {
@@ -23,6 +28,9 @@ internal static class AdventOfCodeClientExtensions
             httpClient.BaseAddress = new Uri(options.BaseUrl);
             httpClient.DefaultRequestHeaders.Add("Cookie", $"session={options.SessionToken}");
         });
+
+        builder.Services.AddSingleton<InputCache>();
+        builder.Services.AddSingleton<IAdventOfCodeClient, AdventOfCodeClientWithCache>();
 
         return builder;
     }

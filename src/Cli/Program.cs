@@ -1,7 +1,7 @@
 ﻿// SPDX-FileCopyrightText: Copyright (c) 2025 Logan Bussell
 // SPDX-License-Identifier: MIT
 
-using AdventOfCode.Cli;
+using AdventOfCode.Cli.Client;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +15,6 @@ builder.AddAdventOfCodeClient();
 
 var host = builder.Build();
 
-var client = host.Services.GetRequiredService<AdventOfCodeClient>();
-var input = await client.GetInputAsync(2020, 1);
+var client = host.Services.GetRequiredService<IAdventOfCodeClient>();
+var input = await client.GetInputAsync(2020, 2);
 Console.WriteLine(input);

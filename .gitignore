@@ -1,5 +1,6 @@
 # advent of code cache
 .aoc
+input/
 
 # dotenv files
 .env
