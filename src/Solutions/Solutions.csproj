@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <IsAotCompatible>true</IsAotCompatible>
+    <RootNamespace>AdventOfCode.Solutions</RootNamespace>
   </PropertyGroup>
 
 </Project>
