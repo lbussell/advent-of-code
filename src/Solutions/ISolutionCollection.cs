@@ -5,6 +5,6 @@ namespace AdventOfCode.Solutions;
 
 public interface ISolutionCollection
 {
-    IEnumerable<ISolution> All { get; }
-    IEnumerable<ISolution> Get(SolutionQuery query);
+    IEnumerable<Solution> All { get; }
+    IEnumerable<Solution> Get(SolutionQuery query);
 }

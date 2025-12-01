@@ -26,8 +26,8 @@ public sealed class SolutionCollection : ISolutionCollection
             .ToFrozenDictionary(group => group.Key, group => group.ToArray());
     }
 
-    public IEnumerable<ISolution> All => _all;
+    public IEnumerable<Solution> All => _all;
 
-    public IEnumerable<ISolution> Get(SolutionQuery query) =>
+    public IEnumerable<Solution> Get(SolutionQuery query) =>
         _index.TryGetValue(query, out var matches) ? matches : [];
 }

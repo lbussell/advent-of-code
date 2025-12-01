@@ -3,7 +3,7 @@
 
 namespace AdventOfCode.Solutions;
 
-public abstract class Solution : ISolution
+public abstract class Solution
 {
     protected Solution(int year, int day, int part, string? note = null)
     {

@@ -3,6 +3,8 @@
 
 namespace AdventOfCode.Solutions;
 
+using AdventOfCode.Solutions.Day01;
+
 public static class AllSolutions
 {
     public static ISolutionCollection Collection => new SolutionCollection([

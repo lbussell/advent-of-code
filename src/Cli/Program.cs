@@ -58,6 +58,13 @@ rootCommand.SetAction(async parseResult =>
     foreach (var solution in matchingSolutions)
     {
         Console.WriteLine($"\nSolving {solution.DisplayName}");
+
+        foreach (var example in solution.Examples)
+        {
+            var exampleOutput = solution.Solve(example.Input);
+            Console.WriteLine($"> Example Output: {exampleOutput} (Expected: {example.ExpectedOutput})");
+        }
+
         var input = await adventOfCodeClient.GetInputAsync(solution.Year, solution.Day);
         var answer = solution.Solve(input);
         Console.WriteLine($"> Solution: {answer}");
