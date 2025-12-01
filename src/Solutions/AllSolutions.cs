@@ -9,5 +9,6 @@ public static class AllSolutions
 {
     public static ISolutionCollection Collection => new SolutionCollection([
         new Day01Part1(),
+        new Day01Part2(),
     ]);
 }
