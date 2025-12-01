@@ -6,7 +6,6 @@ namespace AdventOfCode.Solutions;
 public static class AllSolutions
 {
     public static ISolutionCollection Collection => new SolutionCollection([
-        new ExamplePart1(),
-        new ExamplePart2(),
+        new Day01Part1(),
     ]);
 }
