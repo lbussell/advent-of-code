@@ -28,6 +28,9 @@ rootCommand.Options.Add(dayOption);
 var partOption = new Option<int?>("--part");
 rootCommand.Options.Add(partOption);
 
+var examplesOnlyOption = new Option<bool>("--examples-only");
+rootCommand.Options.Add(examplesOnlyOption);
+
 rootCommand.SetAction(async parseResult =>
 {
     var query = new SolutionQuery();
@@ -65,9 +68,12 @@ rootCommand.SetAction(async parseResult =>
             Console.WriteLine($"> Example Output: {exampleOutput} (Expected: {example.ExpectedOutput})");
         }
 
-        var input = await adventOfCodeClient.GetInputAsync(solution.Year, solution.Day);
-        var answer = solution.Solve(input);
-        Console.WriteLine($"> Solution: {answer}");
+        if (!parseResult.GetValue(examplesOnlyOption))
+        {
+            var input = await adventOfCodeClient.GetInputAsync(solution.Year, solution.Day);
+            var answer = solution.Solve(input);
+            Console.WriteLine($"> Solution: {answer}");
+        }
     }
     Console.WriteLine();
 });
