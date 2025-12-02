@@ -4,11 +4,14 @@
 namespace AdventOfCode.Solutions;
 
 using AdventOfCode.Solutions.Day01;
+using AdventOfCode.Solutions.Day02;
 
 public static class AllSolutions
 {
     public static ISolutionCollection Collection => new SolutionCollection([
         new Day01Part1(),
         new Day01Part2(),
+        new Day02Part1(),
+        new Day02Part2(),
     ]);
 }
