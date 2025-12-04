@@ -1,77 +1,48 @@
 ﻿// SPDX-FileCopyrightText: Copyright (c) 2025 Logan Bussell
 // SPDX-License-Identifier: MIT
 
-using System.CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using AdventOfCode.Cli.Client;
 using AdventOfCode.Solutions;
+using ConsoleAppFramework;
 
-
-var builder = Host.CreateApplicationBuilder();
-
+var builder = Host.CreateApplicationBuilder(args);
 builder.Configuration.AddUserSecrets<Program>();
 builder.AddAdventOfCodeClient();
 
-var host = builder.Build();
-await host.StartAsync();
+var app = builder.ToConsoleAppBuilder();
+app.Add<Solver>();
+await app.RunAsync(args);
 
-var rootCommand = new RootCommand();
-
-var yearOption = new Option<int?>("--year");
-rootCommand.Options.Add(yearOption);
-
-var dayOption = new Option<int?>("--day");
-rootCommand.Options.Add(dayOption);
-
-var partOption = new Option<int?>("--part");
-rootCommand.Options.Add(partOption);
-
-var examplesOnlyOption = new Option<bool>("--examples-only");
-rootCommand.Options.Add(examplesOnlyOption);
-
-rootCommand.SetAction(async parseResult =>
+class Solver(IAdventOfCodeClient adventOfCodeClient)
 {
-    var solutions = AllSolutions.Collection;
-    var query = new SolutionQuery();
+    private readonly IAdventOfCodeClient _adventOfCodeClient = adventOfCodeClient;
 
-    var year = parseResult.GetValue(yearOption);
-    query = year switch
+    public async Task Run(int year = 2025, int? day = null, int? part = null, bool examplesOnly = false)
     {
-        int y => query with { Year = y },
-        _     => query with { Year = solutions.All.Max(s => s.Year) },
-    };
+        var query = new SolutionQuery(year);
+        if (day is not null) query = query with { Day = day.Value };
+        if (part is not null) query = query with { Part = part.Value };
 
-    var day = parseResult.GetValue(dayOption);
-    if (day is not null) query = query with { Day = day.Value };
+        var matchingSolutions = AllSolutions.Collection.Get(query);
 
-    var part = parseResult.GetValue(partOption);
-    if (part is not null) query = query with { Part = part.Value };
-
-    var matchingSolutions = solutions.Get(query);
-
-    var adventOfCodeClient = host.Services.GetRequiredService<IAdventOfCodeClient>();
-
-    foreach (var solution in matchingSolutions)
-    {
-        Console.WriteLine($"\nSolving {solution.DisplayName}");
-
-        foreach (var example in solution.Examples)
+        foreach (var solution in matchingSolutions)
         {
-            var exampleOutput = solution.Solve(example.Input);
-            Console.WriteLine($"> Example Output: {exampleOutput} (Expected: {example.ExpectedOutput})");
-        }
+            Console.WriteLine($"\nSolving {solution.DisplayName}");
 
-        if (!parseResult.GetValue(examplesOnlyOption))
-        {
-            var input = await adventOfCodeClient.GetInputAsync(solution.Year, solution.Day);
-            var answer = solution.Solve(input);
-            Console.WriteLine($"> Solution: {answer}");
+            foreach (var example in solution.Examples)
+            {
+                var exampleOutput = solution.Solve(example.Input);
+                Console.WriteLine($"> Example Output: {exampleOutput} (Expected: {example.ExpectedOutput})");
+            }
+
+            if (!examplesOnly)
+            {
+                var input = await _adventOfCodeClient.GetInputAsync(solution.Year, solution.Day);
+                var answer = solution.Solve(input);
+                Console.WriteLine($"> Solution: {answer}");
+            }
         }
     }
-    Console.WriteLine();
-});
-
-var parseResult = rootCommand.Parse(args);
-await parseResult.InvokeAsync();
+}

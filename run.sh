@@ -6,5 +6,5 @@
 
 # Redirect output to /dev/null to avoid cluttering the output
 pushd src/Cli > /dev/null
-dotnet run -- "$@"
+dotnet run -- run "$@"
 popd > /dev/null
