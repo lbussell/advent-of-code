@@ -5,6 +5,7 @@ namespace AdventOfCode.Solutions;
 
 using AdventOfCode.Solutions.Day01;
 using AdventOfCode.Solutions.Day02;
+using AdventOfCode.Solutions.Day03;
 
 public static class AllSolutions
 {
@@ -13,5 +14,6 @@ public static class AllSolutions
         new Day01Part2(),
         new Day02Part1(),
         new Day02Part2(),
+        new Day03Part1(),
     ]);
 }
