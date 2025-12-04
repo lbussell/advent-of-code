@@ -5,8 +5,6 @@ namespace AdventOfCode.Solutions.Day03;
 
 internal sealed class Day03Part1() : Solution(2025, 3, 1)
 {
-    private readonly char[] _largestTwo = ['0', '0'];
-
     public override string Solve(string input)
     {
         var total = 0;
@@ -43,4 +41,47 @@ internal sealed class Day03Part1() : Solution(2025, 3, 1)
         818181911112111
         """,
         "357");
+}
+
+internal sealed class Day03Part2() : Solution(2025, 3, 2)
+{
+    private const int BatteriesToUse = 12;
+    private readonly Stack<char> _batteryStack = new(BatteriesToUse);
+
+    public override string Solve(string input)
+    {
+        var banks = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+
+        long total = 0;
+        foreach (var bank in banks) total += LargestCombination(bank);
+
+        return total.ToString();
+    }
+
+    private long LargestCombination(ReadOnlySpan<char> bank)
+    {
+        var numberOfBatteries = bank.Length;
+
+        _batteryStack.Clear();
+        _batteryStack.Push(bank[0]);
+
+        for (var i = 1; i < numberOfBatteries; i += 1)
+        {
+            var currentBatteryValue = bank[i];
+
+            while (_batteryStack.Count > 0
+                   && (numberOfBatteries - i + _batteryStack.Count) > BatteriesToUse
+                   && currentBatteryValue > _batteryStack.Peek())
+                _batteryStack.Pop();
+
+            if (_batteryStack.Count < BatteriesToUse)
+                _batteryStack.Push(currentBatteryValue);
+        }
+
+        var combination = long.Parse(_batteryStack.Reverse().ToArray());
+        return combination;
+    }
+
+    public override IEnumerable<Example> Examples { get; } =
+        [Day03Part1.Example with { ExpectedOutput = "3121910778619" }];
 }
