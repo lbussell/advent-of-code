@@ -33,27 +33,22 @@ rootCommand.Options.Add(examplesOnlyOption);
 
 rootCommand.SetAction(async parseResult =>
 {
+    var solutions = AllSolutions.Collection;
     var query = new SolutionQuery();
 
-    var year = parseResult.GetValue(yearOption) ?? -1;
-    if (year != -1)
+    var year = parseResult.GetValue(yearOption);
+    query = year switch
     {
-        query = query with { Year = year };
-    }
+        int y => query with { Year = y },
+        _     => query with { Year = solutions.All.Max(s => s.Year) },
+    };
 
-    var day = parseResult.GetValue(dayOption) ?? -1;
-    if (day != -1)
-    {
-        query = query with { Day = day };
-    }
+    var day = parseResult.GetValue(dayOption);
+    if (day is not null) query = query with { Day = day.Value };
 
-    var part = parseResult.GetValue(partOption) ?? -1;
-    if (part != -1)
-    {
-        query = query with { Part = part };
-    }
+    var part = parseResult.GetValue(partOption);
+    if (part is not null) query = query with { Part = part.Value };
 
-    var solutions = AllSolutions.Collection;
     var matchingSolutions = solutions.Get(query);
 
     var adventOfCodeClient = host.Services.GetRequiredService<IAdventOfCodeClient>();
