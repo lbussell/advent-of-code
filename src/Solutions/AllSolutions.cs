@@ -18,5 +18,6 @@ public static class AllSolutions
         new Day03Part1(),
         new Day03Part2(),
         new Day04Part1(),
+        new Day04Part2(),
     ]);
 }
