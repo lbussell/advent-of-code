@@ -12,9 +12,10 @@ internal sealed class Day04Part1() : Solution(2025, 4, 1)
         var world = new GridWorld<GridItem>(input, new Day04Converter());
 
         return world.Where(position => position.Value is GridItem.Paper)
-                    .Where(position => position.Adjacent()
-                                               .Where(adjacent => adjacent.Value is GridItem.Paper)
-                                               .Count() < 4)
+                    .Where(position =>
+                           position.Adjacent()
+                                   .Where(adjacent => adjacent.Value is GridItem.Paper)
+                                   .Count() < 4)
                     .Count()
                     .ToString();
     }
