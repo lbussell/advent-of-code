@@ -7,6 +7,7 @@ using AdventOfCode.Solutions.Day01;
 using AdventOfCode.Solutions.Day02;
 using AdventOfCode.Solutions.Day03;
 using AdventOfCode.Solutions.Day04;
+using AdventOfCode.Solutions.Day05;
 
 public static class AllSolutions
 {
@@ -19,5 +20,7 @@ public static class AllSolutions
         new Day03Part2(),
         new Day04Part1(),
         new Day04Part2(),
+        new Day05Part1(),
+        new Day05Part2(),
     ]);
 }
