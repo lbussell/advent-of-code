@@ -31,23 +31,12 @@ internal readonly record struct Edge
 
 internal sealed class Day08Part1() : Solution(2025, 8, 1)
 {
-    private const bool DebugOutput = false;
-
     public override string Solve(string input)
     {
-        var edgeA = new Edge(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-        var edgeB = new Edge(new Vector3(4, 5, 6), new Vector3(1, 2, 3));
-        Console.WriteLine($"Edge A: {edgeA}");
-        Console.WriteLine($"Edge B: {edgeB}");
-        Console.WriteLine($"Edges equal: {edgeA == edgeB}");
-
-        var boxes = input.ToLines()
-                         .Select(Vector3.Parse)
-                         .ToArray();
-
-        HashSet<Edge> edges = [];
+        var boxes = input.ToLines().Select(Vector3.Parse).ToArray();
 
         // Build up graph of edges
+        HashSet<Edge> edges = [];
         foreach (var boxA in boxes)
         {
             foreach (var boxB in boxes)
@@ -61,63 +50,31 @@ internal sealed class Day08Part1() : Solution(2025, 8, 1)
         // Sort edges by distance to get the shortest connections
         var edgeList = edges.ToList();
         edgeList.Sort((e1, e2) => e1.Distance.CompareTo(e2.Distance));
-        Console.WriteLine(string.Join(Environment.NewLine, edgeList.Take(10)));
 
-        List<HashSet<Vector3>> clusters = [];
-        HashSet<Vector3>? GetFromClusters(Vector3 box) => clusters.FirstOrDefault(c => c.Contains(box));
+        // Put each box into its own circuit initially
+        List<HashSet<Vector3>> circuits = boxes.Select(box => new HashSet<Vector3> { box }).ToList();
+        HashSet<Vector3> GetCircuitFor(Vector3 box) => circuits.First(c => c.Contains(box));
 
-        foreach (var edge in edgeList.Take(1000))
+        var iterations = 1000; // For the example input, this should be 10
+        foreach (var edge in edgeList.Take(iterations))
         {
-            var clusterA = GetFromClusters(edge.A);
-            var aAlreadyInCluster = clusterA is not null;
-            var clusterB = GetFromClusters(edge.B);
-            var bAlreadyInCluster = clusterB is not null;
+            var circuitA = GetCircuitFor(edge.A);
+            var circuitB = GetCircuitFor(edge.B);
 
-            switch (aAlreadyInCluster, bAlreadyInCluster)
+            // If they aren't in the same circuit, then merge them together
+            if (circuitA != circuitB)
             {
-                // Neither point is in a cluster yet.
-                // Create a new cluster.
-                case (false, false):
-                    if (DebugOutput) Console.WriteLine($"Creating new cluster with edge: {edge.A}-{edge.B}");
-                    var newCluster = new HashSet<Vector3> { edge.A, edge.B };
-                    clusters.Add(newCluster);
-                    break;
-
-                // One point is already in a cluster.
-                // Add the other point to the existing cluster.
-                case (true, false):
-                    if (DebugOutput) Console.WriteLine($"Adding {edge.B} to existing cluster with {edge.A}");
-                    clusterA!.Add(edge.B);
-                    break;
-                case (false, true):
-                    if (DebugOutput) Console.WriteLine($"Adding {edge.A} to existing cluster with {edge.B}");
-                    clusterB!.Add(edge.A);
-                    break;
-
-                // Both points are already in clusters.
-                // If they are not the same cluster, merge them together.
-                case (true, true) when clusterA != clusterB:
-                    if (DebugOutput) Console.WriteLine($"Merging clusters containing {edge.A} and {edge.B}");
-                    clusterA!.UnionWith(clusterB!);
-                    clusters.Remove(clusterB!);
-                    break;
-
-                default:
-                    // Both points are already in the same cluster, do nothing.
-                    if (DebugOutput) Console.WriteLine($"Both points {edge.A} and {edge.B} are already in the same cluster, skipping.");
-                    break;
+                circuitA.UnionWith(circuitB);
+                circuits.Remove(circuitB);
             }
         }
 
-        // Get the sizes of the three largest clusters
-        var largestClusters = clusters.OrderByDescending(c => c.Count)
-                                      .Take(3)
-                                      .ToArray();
-
-        Console.WriteLine($"Number of clusters: {clusters.Count}");
-        Console.WriteLine($"Sizes of three largest clusters: {string.Join(", ", largestClusters.Select(c => c.Count))}");
-
-        return largestClusters.Select(c => c.Count).Product().ToString();
+        // Multiply the sizes of the three largest circuits
+        return circuits.OrderByDescending(c => c.Count)
+                       .Take(3)
+                       .Select(c => c.Count)
+                       .Product()
+                       .ToString();
     }
 
     public override IEnumerable<Example> Examples { get; } = [Example];
@@ -152,11 +109,54 @@ internal sealed class Day08Part2() : Solution(2025, 8, 2)
 {
     public override string Solve(string input)
     {
-        return "";
+        var boxes = input.ToLines().Select(Vector3.Parse).ToArray();
+
+        // Build up graph of edges
+        HashSet<Edge> edges = [];
+        foreach (var boxA in boxes)
+        {
+            foreach (var boxB in boxes)
+            {
+                if (boxA == boxB) continue;
+                var edge = new Edge(boxA, boxB);
+                edges.Add(edge);
+            }
+        }
+
+        // Sort edges by distance to get the shortest connections
+        var edgeList = edges.ToList();
+        edgeList.Sort((e1, e2) => e1.Distance.CompareTo(e2.Distance));
+
+        // Put each box into its own circuit initially
+        List<HashSet<Vector3>> circuits = boxes.Select(box => new HashSet<Vector3> { box }).ToList();
+        HashSet<Vector3> GetCircuitFor(Vector3 box) => circuits.First(c => c.Contains(box));
+
+        var result = "";
+        foreach (var edge in edgeList)
+        {
+            var circuitA = GetCircuitFor(edge.A);
+            var circuitB = GetCircuitFor(edge.B);
+
+            // If they aren't in the same circuit, then merge them together
+            if (circuitA != circuitB)
+            {
+                circuitA.UnionWith(circuitB);
+                circuits.Remove(circuitB);
+            }
+
+            if (circuits.Count == 1)
+            {
+                result = "Last edge connecting circuits: " + edge;
+                break;
+            }
+        }
+
+        // Multiply the sizes of the three largest circuits
+        return result;
     }
 
     public override IEnumerable<Example> Examples { get; } =
-        [Day08Part1.Example with { ExpectedOutput = "TODO" }];
+        [Day08Part1.Example with { ExpectedOutput = "" }];
 }
 
 internal static class Day08Extensions
